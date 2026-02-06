@@ -32,7 +32,15 @@ CPMAddPackage(
     GIT_TAG 3.0.x
 )
 
+include_directories(.)
+include_directories(src)
+include_directories(audio)
+
 add_executable(sonograf
+    audio/AudioInput.cpp
+    audio/AudioOutput.cpp
+    audio/AudioProcessor.cpp
+    src/SonoGraf.cpp
     src/main.cpp
 )
 
