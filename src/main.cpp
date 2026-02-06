@@ -6,15 +6,15 @@
 */
 
 #include <SFML/Graphics.hpp>
+#include <optional>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Sonograf");
+    sf::RenderWindow window(sf::VideoMode({1920, 1080}), "Sonograf");
 
     while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+        while (auto event = window.pollEvent()) {
+            if (event->is<sf::Event::Closed>())
                 window.close();
         }
 

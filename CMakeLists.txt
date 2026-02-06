@@ -33,7 +33,7 @@ CPMAddPackage(
 )
 
 add_executable(sonograf
-    main.cpp
+    src/main.cpp
 )
 
 target_link_libraries(sonograf
