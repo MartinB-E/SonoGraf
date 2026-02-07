@@ -1,8 +1,8 @@
 /*
-** EPITECH PROJECT, 2026
-** SonoGraf
-** File description:
-** SonoGraf
+ EPITECH PROJECT, 2026
+ SonoGraf
+ File description:
+ SonoGraf
 */
 
 #include "SonoGraf.hpp"
@@ -35,7 +35,17 @@ SonoGraf::SonoGraf()
     _plans.push_back(planOsilator);
     Osilator osilator(_window, std::make_shared<Plan>(planOsilator));
     _osilators.push_back(std::make_shared<Osilator>(osilator));
-    std::cout << "Controls:\n" << "H/G: Increase/Decrease Gain\n" << "F/D: Increase/Decrease Distortion\n" << "O/P: Increase/Decrease Pitch\n" << "ESC: Exit\n";
+    _processor.setLow(1.0f);
+    _processor.setHigh(0.0f);
+    _processor.setGain(1.0f);
+    std::cout << "Controls:\n" 
+        << "G/H: Decrease/Increase Gain\n" 
+        << "D/F: Decrease/Increase Distortion\n" 
+        << "O/P: Decrease/Increase Pitch\n"
+        << "B/N: Decrease/Increase Bitcrush\n"
+        << "K/L: Decrease/Increase Bass Boost\n"
+        << "U/I: Decrease/Increase Highs Boost\n"
+        << "ESC: Exit\n";
     _output.play();
 }
 
@@ -54,6 +64,37 @@ void SonoGraf::processEvents()
         _menu.handleEvent(*event);
     }
 
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(*_window);
+        sf::Vector2f worldPos = _window->mapPixelToCoords(mousePos);
+        sf::FloatRect bounds = _plans[2].getPlan()->getGlobalBounds();
+
+        if (bounds.contains(worldPos)) {
+            float posx = (worldPos.x - bounds.position.x) / bounds.size.x;
+            float posy = (worldPos.y - bounds.position.y) / bounds.size.y;
+
+            if (posx < 0.5f) {
+                _bitcrush = (0.5f - posx) * 2.0f;
+                _distortion = 0.0f;
+            } else {
+                _distortion = (posx - 0.5f) * 20.0f;
+                _bitcrush = 0.0f;
+            }
+            
+            if (posy < 0.5f) {
+                float factor = (0.5f - posy) * 2.0f;
+                _high = factor;
+                _low = 1.0f;
+                _pitch = 1.0f + (factor * 0.05f);
+            } else {
+                float factor = (posy - 0.5f) * 2.0f;
+                _low = 1.0f - factor;
+                _high = 0.0f;
+                _pitch = 1.0f - (factor * 0.05f);
+            }
+        }
+    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
         _window->close();
 
@@ -61,20 +102,40 @@ void SonoGraf::processEvents()
         _gain += 0.02f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::G))
         _gain = std::max(0.1f, _gain - 0.02f);
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F)) 
         _distortion += 0.01f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
         _distortion = std::max(0.0f, _distortion - 0.01f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O))
-        _pitch += 0.01f;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
+        _pitch += 0.01f;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::O))
         _pitch = std::max(0.1f, _pitch - 0.01f);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::N))
+        _bitcrush = std::min(1.0f, _bitcrush + 0.01f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::B))
+        _bitcrush = std::max(0.0f, _bitcrush - 0.01f);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::K))
+        _low = std::max(0.01f, _low - 0.01f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::L))
+        _low = std::min(1.0f, _low + 0.01f);
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::I))
+        _high = std::min(1.0f, _high + 0.01f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::U))
+        _high = std::max(0.0f, _high - 0.01f);
 }
 
 void SonoGraf::update()
 {
     _processor.setGain(_gain);
     _processor.setDistortion(_distortion);
+    _processor.setBitcrush(_bitcrush);
+    _processor.setHigh(_high);
+    _processor.setLow(_low);
     _output.setPitch(_pitch);
     for (auto& osilator : _osilators)
         osilator->update(_output.getVisualizerSamples());

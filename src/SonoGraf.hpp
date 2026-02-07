@@ -28,8 +28,8 @@ class SonoGraf {
         void render();
 
         AudioInput _input;
-        AudioOutput _output;
         AudioProcessor _processor;
+        AudioOutput _output;
 
         std::shared_ptr<sf::RenderWindow> _window;
         std::vector<Plan> _plans;
@@ -39,4 +39,7 @@ class SonoGraf {
         float _gain = 1.0f;
         float _pitch = 1.0f;
         float _distortion = 0.0f;
+        float _bitcrush = 0.0f;
+        float _low = 1.0f;
+        float _high = 0.0f;
 };
