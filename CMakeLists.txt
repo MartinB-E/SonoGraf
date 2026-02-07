@@ -34,15 +34,23 @@ CPMAddPackage(
 
 include_directories(.)
 include_directories(src)
-include_directories(audio)
+include_directories(src/Graphic/Menu)
+include_directories(src/Graphic/Bouton)
+include_directories(src/Graphic/Osilator)
+include_directories(src/Graphic/ChooseMusic)
+include_directories(src/Graphic/Plan)
+include_directories(src/audio/AudioInput)
+include_directories(src/audio/AudioOutput)
+include_directories(src/audio/AudioProcessor)
 
 add_executable(sonograf
-    src/audio/AudioInput.cpp
-    src/audio/AudioOutput.cpp
-    src/audio/AudioProcessor.cpp
-    src/Graphique/Bouton/Bouton.cpp
-    src/Graphique/Menu/Menu.cpp
-    src/Graphique/Plan/Plan.cpp
+    src/audio/AudioInput/AudioInput.cpp
+    src/audio/AudioOutput/AudioOutput.cpp
+    src/audio/AudioProcessor/AudioProcessor.cpp
+    src/Graphic/Bouton/Bouton.cpp
+    src/Graphic/Menu/Menu.cpp
+    src/Graphic/Plan/Plan.cpp
+    src/Graphic/Osilator/Osilator.cpp
     src/SonoGraf.cpp
     src/main.cpp
 )
