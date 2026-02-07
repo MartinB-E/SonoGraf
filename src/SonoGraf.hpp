@@ -11,6 +11,8 @@
     #include "audio/AudioInput.hpp"
     #include "audio/AudioProcessor.hpp"
     #include "audio/AudioOutput.hpp"
+    #include "Graphique/Menu/Menu.hpp"
+    #include "Graphique/Plan/Plan.hpp"
 
 class SonoGraf {
     public:
@@ -27,6 +29,8 @@ class SonoGraf {
         AudioProcessor _processor;
 
         sf::RenderWindow _window;
+        Menu _menu;
+        Plan _plan;
         
         float _gain = 1.0f;
         float _pitch = 1.0f;

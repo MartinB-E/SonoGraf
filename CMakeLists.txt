@@ -40,6 +40,9 @@ add_executable(sonograf
     audio/AudioInput.cpp
     audio/AudioOutput.cpp
     audio/AudioProcessor.cpp
+    src/Graphique/Bouton/Bouton.cpp
+    src/Graphique/Menu/Menu.cpp
+    src/Graphique/Plan/Plan.cpp
     src/SonoGraf.cpp
     src/main.cpp
 )
