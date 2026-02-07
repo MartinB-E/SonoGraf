@@ -9,12 +9,19 @@
 #include <iostream>
 
 SonoGraf::SonoGraf() 
-    : _output(_input, _processor), _window(sf::VideoMode({800, 600}), "SonoGraf")
+    : _output(_input, _processor), _window(sf::VideoMode({800, 600}), "SonoGraf"), _menu(_window)
 {
     _window.setFramerateLimit(60);
-
+    _menu.addButton("PLAY", [this]() {
+        std::cout << "Bouton Play cliqué !" << std::endl;
+        _output.play(); 
+    });
+    _menu.addButton("PAUSE", [this]() {
+        std::cout << "Bouton Pause cliqué !" << std::endl;
+        _output.pause(); 
+    });
     std::cout << "Controls:\n" << "H/G: Increase/Decrease Gain\n" << "F/D: Increase/Decrease Distortion\n" << "O/P: Increase/Decrease Pitch\n" << "ESC: Exit\n";
-    _output.play();
+    // _output.play();
 }
 
 void SonoGraf::processEvents()
@@ -22,6 +29,7 @@ void SonoGraf::processEvents()
     while (const std::optional event = _window.pollEvent()) {
         if (event->is<sf::Event::Closed>())
             _window.close();
+        _menu.handleEvent(*event);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
@@ -51,6 +59,7 @@ void SonoGraf::update()
 void SonoGraf::render()
 {
     _window.clear(sf::Color(30, 30, 30));
+    _menu.draw();
     _window.display();
 }
 

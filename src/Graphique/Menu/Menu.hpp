@@ -19,7 +19,7 @@ class Menu {
 
         void draw();
         int getPressedItem() const;
-        void handleEvent(sf::Event &event);
+        void handleEvent(const sf::Event &event);
         void addButton(const std::string &text, std::function<void()> onClick);
     private:
         sf::RenderWindow &_window;
