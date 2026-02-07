@@ -7,15 +7,17 @@
 
 
 #pragma once
+    
     #include <SFML/Graphics.hpp>
-    #include "audio/AudioInput.hpp"
-    #include "audio/AudioProcessor.hpp"
-    #include "audio/AudioOutput.hpp"
-    #include "audio/AudioManager.hpp"
-    #include "Graphique/Menu/Menu.hpp"
-    #include "Graphique/Plan/Plan.hpp"
-    #include "Graphique/ChooseMusic/FileExplorer.hpp"
-    #include "Graphique/ChooseMusic/ChooseMusic.hpp"
+    #include "Menu.hpp"
+    #include "Plan.hpp"
+    #include "Osilator.hpp"
+    #include "AudioInput.hpp"
+    #include "AudioOutput.hpp"
+    #include "AudioProcessor.hpp"
+    #include "AudioManager.hpp"
+    #include "FileExplorer.hpp"
+    #include "ChooseMusic.hpp"
 
 class SonoGraf {
     public:
@@ -28,18 +30,23 @@ class SonoGraf {
         void render();
 
         AudioInput _input;
-        AudioOutput _output;
         AudioProcessor _processor;
+        AudioOutput _output;
         AudioManager _manager;
 
         std::shared_ptr<sf::RenderWindow> _window;
+        std::vector<Plan> _plans;
         Menu _menu;
         Plan _plan;
         FileExplorer _fileExplorer;
         ChooseMusicButton _choose;
+        std::vector<std::shared_ptr<Osilator>> _osilators;
 
         
         float _gain = 1.0f;
         float _pitch = 1.0f;
         float _distortion = 0.0f;
+        float _bitcrush = 0.0f;
+        float _low = 1.0f;
+        float _high = 0.0f;
 };

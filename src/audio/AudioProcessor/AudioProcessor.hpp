@@ -16,6 +16,9 @@ class AudioProcessor {
 
         void setGain(float g);
         void setDistortion(float d);
+        void setBitcrush(float b);
+        void setLow(float l);
+        void setHigh(float h);
 
         float getGain() const;
         float getDistortion() const;
@@ -23,4 +26,8 @@ class AudioProcessor {
     private:
         float _gain = 1.f;
         float _distortion = 0.f;
+        float _bitcrush = 0.0f;
+        float _low = 1.0f;
+        float _high = 0.0f;
+        float _save = 0.0f;
 };

@@ -6,8 +6,8 @@
 */
 
 #pragma once
-    #include "../Bouton/Bouton.hpp"
-    #include "../audio/AudioManager.hpp"
+    #include "Bouton.hpp"
+    #include "AudioManager.hpp"
     #include <SFML/Graphics.hpp>
     #include <filesystem>
     #include <vector>
