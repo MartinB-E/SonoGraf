@@ -37,9 +37,9 @@ include_directories(src)
 include_directories(audio)
 
 add_executable(sonograf
-    audio/AudioInput.cpp
-    audio/AudioOutput.cpp
-    audio/AudioProcessor.cpp
+    src/audio/AudioInput.cpp
+    src/audio/AudioOutput.cpp
+    src/audio/AudioProcessor.cpp
     src/Graphique/Bouton/Bouton.cpp
     src/Graphique/Menu/Menu.cpp
     src/Graphique/Plan/Plan.cpp

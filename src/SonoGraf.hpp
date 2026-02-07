@@ -28,9 +28,9 @@ class SonoGraf {
         AudioOutput _output;
         AudioProcessor _processor;
 
-        sf::RenderWindow _window;
+        std::shared_ptr<sf::RenderWindow> _window;
+        std::vector<Plan> _plans;
         Menu _menu;
-        Plan _plan;
         
         float _gain = 1.0f;
         float _pitch = 1.0f;

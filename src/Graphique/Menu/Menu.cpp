@@ -8,7 +8,8 @@
 #include "Menu.hpp"
 #include <iostream>
 
-Menu::Menu(sf::RenderWindow &window) : _window(window), _select_item(0)
+Menu::Menu(std::shared_ptr<sf::RenderWindow> window)
+    : _window(window), _select_item(0)
 {
     if (!_font.openFromFile("../assets/arial.ttf")) {
         std::cerr << "Erreur: Impossible de charger assets/arial.ttf" << std::endl;
@@ -30,7 +31,7 @@ void Menu::addButton(const std::string &text, std::function<void()> onClick)
 void Menu::draw()
 {
     for (auto &button : _buttons) {
-        button.draw(_window);
+        button.draw(*_window);
     }
 }
 
@@ -44,7 +45,7 @@ void Menu::handleEvent(const sf::Event &event)
     if (const auto* mouseEvent = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (mouseEvent->button == sf::Mouse::Button::Left) {
             sf::Vector2i pixelPos = { mouseEvent->position.x, mouseEvent->position.y };
-            sf::Vector2f mousePos = _window.mapPixelToCoords(pixelPos);
+            sf::Vector2f mousePos = _window->mapPixelToCoords(pixelPos);
             for (auto &button : _buttons) {
                 if (button.isClick(mousePos)) {
                     break;

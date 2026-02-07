@@ -13,19 +13,27 @@
 
 class Plan {
     public:
-        Plan();
+        Plan(sf::Vector2f position = {0.f, 0.f}, sf::Vector2f size = {100.f, 100.f}, std::shared_ptr<sf::RenderWindow> window);
         ~Plan();
 
-        void addPlan(std::string name, sf::Vector2f position, sf::Vector2f size);
-        sf::RectangleShape &getPlan(std::string name);
+        void draw();
         void update(const sf::Vector2u &windowSize);
-        void draw(sf::RenderWindow &window);
+
+        void setPosition(float x, float y);
+        void setPosition(std::string xPercent, std::string yPercent);
+        void setSize(float width, float height);
+        void setSize(std::string widthPercent, std::string heightPercent);
+        void setColor(const sf::Color &color);
+        void setOutlineColor(const sf::Color &color);
+        void setOutlineThickness(float thickness);
+
+        sf::Vector2f getSize() const;
+        sf::Vector2f getPosition() const;
+        std::shared_ptr<sf::RectangleShape> getPlan();
 
     private:
-        struct PlanConfig {
-            sf::Vector2f position;
-            sf::Vector2f size;
-        };
-        std::map<std::string, PlanConfig> _configs;
-        std::map<std::string, sf::RectangleShape> _plans;
+        sf::Vector2f _size;
+        sf::Vector2f _position;
+        std::shared_ptr<sf::RenderWindow> _window;
+        std::shared_ptr<sf::RectangleShape> _plan;
 };

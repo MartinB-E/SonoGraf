@@ -7,7 +7,8 @@
 
 #include "Plan.hpp"
 
-Plan::Plan()
+Plan::Plan(sf::Vector2f position, sf::Vector2f size, std::shared_ptr<sf::RenderWindow> window)
+    :  _size(size), _position(position), _window(window), _plan(std::make_shared<sf::RectangleShape>(size))
 {
 }
 
@@ -15,20 +16,9 @@ Plan::~Plan()
 {
 }
 
-void Plan::addPlan(std::string name, sf::Vector2f position, sf::Vector2f size)
+std::shared_ptr<sf::RectangleShape> Plan::getPlan()
 {
-    _configs[name] = {position, size}; // Store percentages
-
-    sf::RectangleShape rect;
-    rect.setFillColor(sf::Color::Transparent);
-    rect.setOutlineColor(sf::Color(148, 0, 211)); // Violet
-    rect.setOutlineThickness(1);
-    _plans[name] = rect;
-}
-
-sf::RectangleShape &Plan::getPlan(std::string name)
-{
-    return _plans[name];
+    return _plan;
 }
 
 void Plan::update(const sf::Vector2u &windowSize)
@@ -36,21 +26,56 @@ void Plan::update(const sf::Vector2u &windowSize)
     float width = (float)windowSize.x;
     float height = (float)windowSize.y;
 
-    for (auto &element : _configs) {
-        std::string name = element.first;
-        PlanConfig config = element.second;
-        float x = config.position.x * width;
-        float y = config.position.y * height;
-        float w = config.size.x * width;
-        float h = config.size.y * height;
-        _plans[name].setPosition({x, y});
-        _plans[name].setSize({w, h});
-    }
+    _plan->setPosition({_position.x * width, _position.y * height});
+    _plan->setSize({_size.x * width, _size.y * height});
 }
 
-void Plan::draw(sf::RenderWindow &window)
+void Plan::draw()
 {
-    for (auto &plan : _plans) {
-        window.draw(plan.second);
-    }
+    _window->draw(*_plan);
+}
+
+void Plan::setPosition(float x, float y)
+{
+    _position = {x, y};
+}
+
+void Plan::setSize(float width, float height)
+{
+    _size = {width, height};
+}
+
+sf::Vector2f Plan::getSize() const
+{
+    return _size;
+}
+
+sf::Vector2f Plan::getPosition() const
+{
+    return _position;
+}
+
+void Plan::setPosition(std::string xPercent, std::string yPercent)
+{
+    _position = {(std::stof(xPercent) / 100.f), (std::stof(yPercent) / 100.f)};
+}
+
+void Plan::setSize(std::string widthPercent, std::string heightPercent)
+{
+    _size = {(std::stof(widthPercent) / 100.f), (std::stof(heightPercent) / 100.f)};
+}
+
+void Plan::setColor(const sf::Color &color)
+{
+    _plan->setFillColor(color);
+}
+
+void Plan::setOutlineColor(const sf::Color &color)
+{
+    _plan->setOutlineColor(color);
+}
+
+void Plan::setOutlineThickness(float thickness)
+{
+    _plan->setOutlineThickness(thickness);
 }
