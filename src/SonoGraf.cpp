@@ -9,7 +9,7 @@
 #include <iostream>
 
 SonoGraf::SonoGraf() 
-    : _output(_processor), _window(std::make_shared<sf::RenderWindow>(sf::VideoMode({1920, 1080}), "SonoGraf")), _menu(_window)
+    : _output(_processor), _window(std::make_shared<sf::RenderWindow>(sf::VideoMode({1920, 1080}), "SonoGraf")), _menu(_window), _fileExplorer(_window), _choose(_window)
 {
     _window->setFramerateLimit(60);
     
@@ -38,6 +38,7 @@ SonoGraf::SonoGraf()
     _processor.setLow(1.0f);
     _processor.setHigh(0.0f);
     _processor.setGain(1.0f);
+    _choose.setPosition(20.f, 20.f);
     std::cout << "Controls:\n" 
         << "G/H: Decrease/Increase Gain\n" 
         << "D/F: Decrease/Increase Distortion\n" 
@@ -62,6 +63,8 @@ void SonoGraf::processEvents()
                 plan.update(newSize);
         }
         _menu.handleEvent(*event);
+        _choose.handleEvent();
+        _fileExplorer.handleEvent(*event, _manager);
     }
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
@@ -149,6 +152,8 @@ void SonoGraf::render()
     _menu.draw();
     for (auto& osilator : _osilators)
         osilator->draw();
+    _choose.draw();
+    _fileExplorer.draw();
     _window->display();
 }
 

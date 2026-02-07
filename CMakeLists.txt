@@ -5,6 +5,8 @@ project(Sonograf LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
 option(DEV_COMPILE "Enable strict compile warnings" OFF)
@@ -45,12 +47,15 @@ include_directories(src/audio/AudioProcessor)
 
 add_executable(sonograf
     src/audio/AudioInput/AudioInput.cpp
+    src/audio/AudioInput/AudioManager.cpp
     src/audio/AudioOutput/AudioOutput.cpp
     src/audio/AudioProcessor/AudioProcessor.cpp
     src/Graphic/Bouton/Bouton.cpp
     src/Graphic/Menu/Menu.cpp
     src/Graphic/Plan/Plan.cpp
     src/Graphic/Osilator/Osilator.cpp
+    src/Graphic/ChooseMusic/FileExplorer.cpp
+    src/Graphic/ChooseMusic/ChooseMusic.cpp
     src/SonoGraf.cpp
     src/main.cpp
 )
