@@ -15,15 +15,17 @@
 
 class AudioOutput : public sf::SoundStream {
     public:
-        AudioOutput(AudioInput& input, AudioProcessor& processor);
+        AudioOutput(AudioProcessor& processor);
 
-    protected:
         bool onGetData(Chunk& data) override;
-        void onSeek(sf::Time) override {}
+        void onSeek(sf::Time) override;
+        std::vector<std::int16_t> getVisualizerSamples();
 
     private:
-        AudioInput& _input;
-        AudioProcessor& _processor;
-        std::vector<std::int16_t> _processed;
         sf::InputSoundFile _musicFile;
+        std::vector<std::int16_t> _tempBuffer;
+        std::vector<std::int16_t> _processed;
+        std::vector<std::int16_t> _visuBuffer;
+        std::mutex _mutex;
+        AudioProcessor& _processor;
 };

@@ -7,10 +7,15 @@
 
 
 #pragma once
+    
     #include <SFML/Graphics.hpp>
-    #include "audio/AudioInput.hpp"
-    #include "audio/AudioProcessor.hpp"
-    #include "audio/AudioOutput.hpp"
+
+    #include "Menu.hpp"
+    #include "Plan.hpp"
+    #include "Osilator.hpp"
+    #include "AudioInput.hpp"
+    #include "AudioOutput.hpp"
+    #include "AudioProcessor.hpp"
 
 class SonoGraf {
     public:
@@ -26,7 +31,10 @@ class SonoGraf {
         AudioOutput _output;
         AudioProcessor _processor;
 
-        sf::RenderWindow _window;
+        std::shared_ptr<sf::RenderWindow> _window;
+        std::vector<Plan> _plans;
+        Menu _menu;
+        std::vector<std::shared_ptr<Osilator>> _osilators;
         
         float _gain = 1.0f;
         float _pitch = 1.0f;
