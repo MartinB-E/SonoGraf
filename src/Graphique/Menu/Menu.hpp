@@ -11,6 +11,8 @@
 #include <vector>
 #include <string>    
 #include "../Bouton/Bouton.hpp"
+#include <memory>
+#include <functional>
 
 class Menu {
     public:
@@ -26,4 +28,5 @@ class Menu {
         int _select_item;
         sf::Font _font;
         std::vector<Bouton> _buttons;
+        std::vector<std::shared_ptr<Bouton>> _buttonPtrs;
 };
