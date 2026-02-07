@@ -9,14 +9,15 @@
 #include <iostream>
 
 SonoGraf::SonoGraf() 
-    : _output(_input, _processor), _window(sf::VideoMode({800, 600}), "SonoGraf"), _menu(_window)
+    : _output(_input, _processor), _window(std::make_shared<sf::RenderWindow>(sf::VideoMode({1920, 1080}), "SonoGraf")), _menu((*_window)), _fileExplorer(_window), _choose(_window)
 {
-    _window.setFramerateLimit(60);
+    _window->setFramerateLimit(60);
     
     _plan.addPlan("Left Side", {0.0f, 0.0f}, {0.20f, 1.0f});
     _plan.addPlan("BottomBar", {0.20f, 0.85f}, {1.0f, 0.15f});
-    _plan.update(_window.getSize());
+    _plan.update(_window->getSize());
 
+    _choose.setPosition(20.f, 20.f);
     // _menu.addButton("PLAY", [this]() {
     //     std::cout << "Bouton Play cliqué !" << std::endl;
     //     _output.play(); 
@@ -31,20 +32,22 @@ SonoGraf::SonoGraf()
 
 void SonoGraf::processEvents()
 {
-    while (const std::optional event = _window.pollEvent()) {
+    while (const std::optional event = _window->pollEvent()) {
         if (event->is<sf::Event::Closed>())
-            _window.close();
+            _window->close();
         else if (const auto* resizeEvent = event->getIf<sf::Event::Resized>()) {
             sf::Vector2u newSize = resizeEvent->size;
             sf::FloatRect visibleArea({0, 0}, {static_cast<float>(newSize.x), static_cast<float>(newSize.y)});
-            _window.setView(sf::View(visibleArea));
+            _window->setView(sf::View(visibleArea));
             _plan.update(newSize);
         }
         _menu.handleEvent(*event);
+        _choose.handleEvent();
+        _fileExplorer.handleEvent(*event, _manager);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-        _window.close();
+        _window->close();
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::H))
         _gain += 0.02f;
@@ -69,15 +72,17 @@ void SonoGraf::update()
 
 void SonoGraf::render()
 {
-    _window.clear(sf::Color(30, 30, 30));
-    _plan.draw(_window);
+    _window->clear(sf::Color(30, 30, 30));
+    _plan.draw((*_window));
     _menu.draw();
-    _window.display();
+    _choose.draw();
+    _fileExplorer.draw();
+    _window->display();
 }
 
 int SonoGraf::run()
 {
-    while (_window.isOpen()) {
+    while (_window->isOpen()) {
         processEvents();
         update();
         render();
