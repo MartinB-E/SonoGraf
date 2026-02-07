@@ -13,7 +13,7 @@
 
 class Plan {
     public:
-        Plan(sf::Vector2f position = {0.f, 0.f}, sf::Vector2f size = {100.f, 100.f}, std::shared_ptr<sf::RenderWindow> window);
+        Plan(sf::Vector2f position = {0.f, 0.f}, sf::Vector2f size = {100.f, 100.f}, std::shared_ptr<sf::RenderWindow> window = nullptr);
         ~Plan();
 
         void draw();
